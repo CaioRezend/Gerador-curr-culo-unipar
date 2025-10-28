@@ -3,7 +3,7 @@
 // funções reutilizáveis (usa $conn da conexao.php)
 
 function buscarUsuarioPorLogin($conn, $email) {
-    $sql = "SELECT * FROM users_login WHERE email = ?";
+    $sql = "SELECT id, nome, email, password FROM usuarios WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
     $stmt->execute();

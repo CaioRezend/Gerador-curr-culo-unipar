@@ -1,48 +1,60 @@
 <?php
-require_once __DIR__ . '/includes/config.php'; 
+// Configurações de Debug (mantidas, mas comentadas)
+/*
+// require_once __DIR__ . '/includes/config.php'; 
 
-if (CONFIG_LOADED && ($CONFIG['debug']['enabled'] ?? false)) {
+// if (CONFIG_LOADED && ($CONFIG['debug']['enabled'] ?? false)) {
+//     error_reporting(E_ALL);
+//     if ($CONFIG['debug']['display_errors'] ?? true) {
+//         ini_set('display_errors', 1);
+//         ini_set('display_startup_errors', 1);
+//     }
+//     if (!empty($CONFIG['app']['timezone'])) {
+//         date_default_timezone_set($CONFIG['app']['timezone']);
+//     }
+// } else {
+//     ini_set('display_errors', 0);
+//     ini_set('display_startup_errors', 0);
+//     error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED); 
+// }
+*/
 
-    error_reporting(E_ALL);
-    
-    if ($CONFIG['debug']['display_errors'] ?? true) {
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
-    }
-
-    if (!empty($CONFIG['app']['timezone'])) {
-        date_default_timezone_set($CONFIG['app']['timezone']);
-    }
-
-} else {
-
-    ini_set('display_errors', 0);
-    ini_set('display_startup_errors', 0);
-
-    error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED); 
-}
 session_start();
+
+// ------------------------------------------------------------------
+// ** CORREÇÃO CHAVE: Define o caminho base da aplicação **
+// Isso garante que os redirecionamentos funcionem corretamente, 
+// pois o seu projeto está em um subdiretório do htdocs.
+$caminhoBase = '/GERADOR-CURR-CULO-UNIPAR';
+// ------------------------------------------------------------------
+
 require_once __DIR__ . '/includes/conexao.php';
 require_once __DIR__ . '/includes/funcoes.php';
 
+// Lógica de Logout
 if (isset($_GET['logout']) && $_GET['logout'] == '1') {
-    session_destroy();
-    header("Location: /index.php");
-    exit;
+  session_destroy();
+  // Usa o caminho base para o redirecionamento de logout
+  header("Location: " . $caminhoBase . "/index.php");
+  exit;
 }
 
 $erro = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'] ?? '';
-    $senha = $_POST['senha'] ?? '';
-    $user = buscarUsuarioPorLogin($conn, $email);
-    if ($user && password_verify($senha, $user['password_hash'])) {
-        $_SESSION['user_login_id'] = $user['id'];
-        header("Location: /pages/dataUsers.php");
-        exit;
-    } else {
-        $erro = "E-mail ou senha inválidos.";
-    }
+  $email = $_POST['email'] ?? '';
+  $senha = $_POST['senha'] ?? '';
+  
+  $user = buscarUsuarioPorLogin($conn, $email);
+  
+  // Lógica de Login
+  if ($user && password_verify($senha, $user['password'])) {
+    $_SESSION['usuarios'] = $user['id'];
+    // Redirecionamento de Sucesso para a página de dados do usuário
+    header("Location: " . $caminhoBase . "/pages/dataUsers.php");
+    exit;
+  } else {
+    $erro = "E-mail ou senha inválidos.";
+  }
 }
 ?>
 <?php include __DIR__ . '/includes/header.php'; ?>
@@ -66,7 +78,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button class="btn btn-dark w-100">Entrar</button>
       </form>
       <hr>
-      <small class="text-muted">Ainda não tem usuário? Use <code>/addUser.php</code> para criar.</small>
+      <small class="text-muted">
+        Ainda não tem usuário?
+        <!-- ** CORREÇÃO APLICADA AQUI **: Usa $caminhoBase no link de cadastro -->
+        <a href="<?php echo $caminhoBase; ?>/pages/dataUsers.php">Clique aqui para criar</a>.
+      </small>
     </div>
   </div>
 </div>
