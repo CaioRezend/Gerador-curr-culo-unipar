@@ -1,27 +1,24 @@
 <?php
-include('includes/conexao.php'); // importa a conexão com o banco
+include('includes/conexao.php');
 
-// Recebe os dados do formulário
 $nome = $_POST['nome'];
 $email = $_POST['email'];
 $telefone = $_POST['telefone'];
 $nascimento = $_POST['nascimento'];
 $sobre = $_POST['sobre'];
+$endereco = $_POST['endereco'];
 
-// Calcula idade automaticamente (se quiser)
 $idade = date_diff(date_create($nascimento), date_create('today'))->y;
 
-// Grava no banco
-$sql = "INSERT INTO usuarios (nome, email, telefone, nascimento, idade, sobre)
-        VALUES ('$nome', '$email', '$telefone', '$nascimento', '$idade', '$sobre')";
+$sql = "INSERT INTO usuarios (nome, email, telefone, nascimento, idade, sobre, enddereco)
+        VALUES ('$nome', '$email', '$telefone', '$nascimento', '$idade', '$sobre', '$endereco')";
 
 if ($conn->query($sql) === TRUE) {
-    $ultimo_id = $conn->insert_id; // ID do usuário recém-criado
+  $ultimo_id = $conn->insert_id;
 } else {
-    die("Erro ao salvar: " . $conn->error);
+  die("Erro ao salvar: " . $conn->error);
 }
 
-// Exibe o currículo gerado
 ?>
 
 <?php include('includes/header.php'); ?>

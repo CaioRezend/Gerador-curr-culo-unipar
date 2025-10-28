@@ -1,7 +1,8 @@
-<php 
- $servidor = "localhost";
- $usuario = "root";
- $senha = "";
- $banco = "generatordb";
+<?php 
+$conn = mysqli_connect("localhost", "root", "", "generatordb");
 
- $conn = new mysql($servidor, $usuario, $senha, $banco);
+if (!$conn) {
+    die("Falha na conexão: " . mysqli_connect_error());
+}
+echo "Conexão bem-sucedida!";
+?>
