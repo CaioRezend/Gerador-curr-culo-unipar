@@ -1,0 +1,14 @@
+{
+    "app": {
+        "name": "Minha Aplicação Web",
+        "timezone": "America/Sao_Paulo"
+    },
+    "debug": {
+        "enabled": true,
+        "display_errors": true
+    },
+    "database": {
+        "host": "localhost",
+        "user": "root"
+    }
+}
