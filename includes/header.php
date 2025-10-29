@@ -1,5 +1,6 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
+$caminhoBase = "/GERADOR-CURR-CULO-UNIPAR"
 ?>
 <!doctype html>
 <html lang="pt-br">
@@ -23,7 +24,7 @@ if (session_status() === PHP_SESSION_NONE) session_start();
           <li class="nav-item"><a class="nav-link" href="/pages/visualizar.php">Visualizar</a></li>
           <li class="nav-item"><a class="nav-link text-danger" href="/index.php?logout=1">Sair</a></li>
         <?php else: ?>
-          <li class="nav-item"><a class="nav-link" href="/index.php">Entrar</a></li>
+          <li class="nav-item"><a class="nav-link" href="<?php echo $caminhoBase; ?>/index.php">Entrar</a></li>
         <?php endif; ?>
       </ul>
     </div>
