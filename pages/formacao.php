@@ -1,15 +1,17 @@
 <?php
 session_start();
-if (empty($_SESSION['user_login_id'])) {
-    header("Location: /index.php");
-    exit;
-}
 
 $caminhoBase = '/GERADOR-CURR-CULO-UNIPAR';
+
+if (empty($_SESSION['usuarios'])) {
+  header("Location: " . $caminhoBase . "/index.php");
+  exit;
+}
+
 require_once __DIR__ . '/../includes/conexao.php';
 require_once __DIR__ . '/../includes/funcoes.php';
 
-$usuario_id = $_SESSION['usuario_id'] ?? null;
+$usuario_id = $_SESSION['usuarios'] ?? null;
 ?>
 <?php include __DIR__ . '/../includes/header.php'; ?>
 
@@ -17,7 +19,7 @@ $usuario_id = $_SESSION['usuario_id'] ?? null;
   <div class="col-md-8">
     <div class="card p-4">
       <h3>Formação Acadêmica</h3>
-      <form action="/pages/saveformacao.php" method="post">
+      <form action="<?php echo $caminhoBase; ?>/pages/saveFormacao.php" method="post">
         <div class="mb-3">
           <label>Instituição</label>
           <input name="instituicao" class="form-control" required>
@@ -37,7 +39,8 @@ $usuario_id = $_SESSION['usuario_id'] ?? null;
         <input type="hidden" name="usuario_id" value="<?php echo htmlspecialchars($usuario_id); ?>">
         <div class="d-flex gap-2">
           <button class="btn btn-dark">Adicionar Formação</button>
-          <a href="<?php echo $caminhoBase;  ?>/pages/experiencia.php" class="btn btn-outline-secondary">Ir para Experiência</a>
+          <a href="<?php echo $caminhoBase; ?>/pages/experiencia.php" class="btn btn-outline-secondary">Ir para
+            Experiência</a>
         </div>
       </form>
     </div>
@@ -45,19 +48,19 @@ $usuario_id = $_SESSION['usuario_id'] ?? null;
       <h5>Formações cadastradas</h5>
       <?php
       if ($usuario_id) {
-          $stmt = $conn->prepare("SELECT * FROM formacao WHERE user_id = ? ORDER BY criado_em DESC");
-          $stmt->bind_param("i", $usuario_id);
-          $stmt->execute();
-          $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-          if ($rows) {
-              foreach ($rows as $r) {
-                  echo "<div class='card p-2 mb-2'><strong>" . htmlspecialchars($r['curso']) . "</strong> — " . htmlspecialchars($r['instituicao']) . " (" . htmlspecialchars($r['ano_conclusao']) . ")</div>";
-              }
-          } else {
-              echo "<p class='text-muted'>Nenhuma formação adicionada.</p>";
+        $stmt = $conn->prepare("SELECT * FROM formacoes WHERE usuario_id = ? ORDER BY criado_em DESC");
+        $stmt->bind_param("i", $usuario_id);
+        $stmt->execute();
+        $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        if ($rows) {
+          foreach ($rows as $r) {
+            echo "<div class='card p-2 mb-2'><strong>" . htmlspecialchars($r['curso']) . "</strong> — " . htmlspecialchars($r['instituicao']) . " (" . htmlspecialchars($r['ano_conclusao']) . ")</div>";
           }
+        } else {
+          echo "<p class='text-muted'>Nenhuma formação adicionada.</p>";
+        }
       } else {
-          echo "<p class='text-muted'>Salve seus dados pessoais primeiro.</p>";
+        echo "<p class='text-muted'>Nenhum usuário logado ou ID de usuário não encontrado.</p>";
       }
       ?>
     </div>

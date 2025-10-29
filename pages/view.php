@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-if (empty($_SESSION['user_login_id'])) {
+if (empty($_SESSION['usuarios'])) {
     header("Location: /index.php");
     exit;
 }
