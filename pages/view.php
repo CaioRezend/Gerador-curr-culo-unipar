@@ -15,7 +15,7 @@ if (!$usuario_id) {
 
 $data = buscarCurriculo($conn, $usuario_id);
 $u = $data['usuario'];
-$formacoes = $data['formacoes'];
+$formacoes = $data['formacao'];
 $exp = $data['experiencias'];
 ?>
 <?php include __DIR__ . '/../includes/header.php'; ?>

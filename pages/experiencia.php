@@ -5,6 +5,7 @@ if (empty($_SESSION['user_login_id'])) {
     header("Location: /index.php");
     exit;
 }
+$caminhoBase = '/GERADOR-CURR-CULO-UNIPAR';
 require_once __DIR__ . '/../includes/conexao.php';
 require_once __DIR__ . '/../includes/funcoes.php';
 
@@ -16,7 +17,7 @@ $usuario_id = $_SESSION['usuario_id'] ?? null;
   <div class="col-md-8">
     <div class="card p-4">
       <h3>Experiência Profissional</h3>
-      <form action="/pages/save_experiencia.php" method="post">
+      <form action="/pages/saveexperiencia.php" method="post">
         <div class="mb-3">
           <label>Cargo</label>
           <input name="cargo" class="form-control" required>
@@ -40,7 +41,7 @@ $usuario_id = $_SESSION['usuario_id'] ?? null;
         <input type="hidden" name="usuario_id" value="<?php echo htmlspecialchars($usuario_id); ?>">
         <div class="d-flex gap-2">
           <button class="btn btn-dark">Adicionar Experiência</button>
-          <a href="/pages/visualizar.php" class="btn btn-outline-secondary">Visualizar Currículo</a>
+          <a href="<?php echo $caminhoBase ?>/pages/view.php" class="btn btn-outline-secondary">Visualizar Currículo</a>
         </div>
       </form>
     </div>

@@ -4,6 +4,8 @@ if (empty($_SESSION['user_login_id'])) {
     header("Location: /index.php");
     exit;
 }
+
+$caminhoBase = '/GERADOR-CURR-CULO-UNIPAR';
 require_once __DIR__ . '/../includes/conexao.php';
 require_once __DIR__ . '/../includes/funcoes.php';
 
@@ -15,7 +17,7 @@ $usuario_id = $_SESSION['usuario_id'] ?? null;
   <div class="col-md-8">
     <div class="card p-4">
       <h3>Formação Acadêmica</h3>
-      <form action="/pages/save_formacao.php" method="post">
+      <form action="/pages/saveformacao.php" method="post">
         <div class="mb-3">
           <label>Instituição</label>
           <input name="instituicao" class="form-control" required>
@@ -35,7 +37,7 @@ $usuario_id = $_SESSION['usuario_id'] ?? null;
         <input type="hidden" name="usuario_id" value="<?php echo htmlspecialchars($usuario_id); ?>">
         <div class="d-flex gap-2">
           <button class="btn btn-dark">Adicionar Formação</button>
-          <a href="/pages/experiencia.php" class="btn btn-outline-secondary">Ir para Experiência</a>
+          <a href="<?php echo $caminhoBase;  ?>/pages/experiencia.php" class="btn btn-outline-secondary">Ir para Experiência</a>
         </div>
       </form>
     </div>
@@ -43,7 +45,7 @@ $usuario_id = $_SESSION['usuario_id'] ?? null;
       <h5>Formações cadastradas</h5>
       <?php
       if ($usuario_id) {
-          $stmt = $conn->prepare("SELECT * FROM formacoes WHERE usuario_id = ? ORDER BY criado_em DESC");
+          $stmt = $conn->prepare("SELECT * FROM formacao WHERE user_id = ? ORDER BY criado_em DESC");
           $stmt->bind_param("i", $usuario_id);
           $stmt->execute();
           $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
