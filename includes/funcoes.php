@@ -18,7 +18,7 @@ function buscarUsuarioPorLogin($conn, $email) {
  * @return array|null Dados pessoais do currículo ou null.
  */
 function buscarDadosPessoaisCurriculo($conn, $user_login_id) {
-    $sql = "SELECT * FROM dados_pessoais WHERE user_login_id = ?";
+    $sql = "SELECT * FROM dados_pessoais WHERE usuario_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $user_login_id);
     $stmt->execute();
@@ -36,11 +36,11 @@ function salvarDadosPessoais($conn, $dados) {
             $dados['sobre'],$dados['endereco'],$dados['cidade'],$dados['estado'],$dados['cep'],$dados['id']);
         return $stmt->execute();
     } else {
-        $sql = "INSERT INTO dados_pessoais (user_login_id, nome, email, telefone, nascimento, sobre, endereco, cidade, estado, cep)
+        $sql = "INSERT INTO dados_pessoais (usuario_id, nome, email, telefone, nascimento, sobre, endereco, cidade, estado, cep)
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("isssssssss",
-            $dados['user_login_id'],$dados['nome'],$dados['email'],$dados['telefone'],$dados['nascimento'],
+            $dados['usuario_id'],$dados['nome'],$dados['email'],$dados['telefone'],$dados['nascimento'],
             $dados['sobre'],$dados['endereco'],$dados['cidade'],$dados['estado'],$dados['cep']);
         
         if ($stmt->execute()) {
@@ -48,6 +48,19 @@ function salvarDadosPessoais($conn, $dados) {
         }
         return false;
     }
+}
+
+function createUser($conn, $nome, $email, $senha) {
+    $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
+
+    $sql = "INSERT INTO usuarios  (nome, email, password) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sss", $nome, $email, $senha_hash);
+
+    if($stmt->execute()) {
+        return $conn->insert_id;
+    }
+    return false;
 }
 
 function adicionarFormacao($conn, $usuario_id, $instituicao, $curso, $ano, $descricao) {

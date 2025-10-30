@@ -1,30 +1,77 @@
 <?php
-
-$caminhoBase = '/GERADOR-CURR-CULO-UNIPAR';
-
+// Inicia a sessão para verificar o status do login
 session_start();
 
-if (empty($_SESSION['usuarios'])) {
-  header("Location: " . $caminhoBase . "/index.php");
-  exit;
+// Inclui arquivos essenciais
+require_once '../includes/conexao.php'; // Certifique-se de que a conexão ($conn) está aqui
+require_once '../includes/funcoes.php'; // Suas funções (incluindo buscarDadosPessoaisCurriculo)
+
+// ----------------------------------------------------
+// 1. Definição do Status de Login e ID
+// ----------------------------------------------------
+$user_id = $_SESSION['user_id'] ?? null;
+$is_logged_in = !empty($user_id);
+
+// ----------------------------------------------------
+// 2. Carregamento de Dados (Para pré-preenchimento ou visualização)
+// ----------------------------------------------------
+
+$curriculo_id = null;
+$dados_curriculo = [];
+$nome_inicial = '';
+$email_inicial = '';
+$telefone_inicial = '';
+// ... (inicialize aqui todas as variáveis que você usa no seu formulário)
+
+if ($is_logged_in) {
+    // Se logado: Tenta carregar os dados pessoais do currículo
+    $dados_curriculo = buscarDadosPessoaisCurriculo($conn, $user_id);
+    $dados_login = buscarUsuarioPorLogin($conn, $_SESSION['user_email'] ?? '');
+    
+    // Prioriza dados do Login para Nome/Email, se disponíveis
+    $nome_inicial = $dados_login['nome'] ?? '';
+    $email_inicial = $dados_login['email'] ?? '';
+    
+    if ($dados_curriculo) {
+        // Se já tem currículo, usa esses dados para pré-preencher
+        $curriculo_id = $dados_curriculo['id'];
+        $telefone_inicial = $dados_curriculo['telefone'] ?? $telefone_inicial;
+        $nome_inicial = $dados_curriculo['nome'] ?? $nome_inicial;
+        $email_inicial = $dados_curriculo['email'] ?? $email_inicial;
+        // ... (atribua aqui todos os outros campos do currículo)
+    }
+} 
+// Se NÃO logado: Todas as variáveis de pré-preenchimento permanecem vazias ('')
+
+// ----------------------------------------------------
+// 3. Exibição de Mensagens de Erro ou Sucesso
+// ----------------------------------------------------
+$mensagem_status = '';
+
+if (isset($_GET['erro'])) {
+    $erro = $_GET['erro'];
+    // Tratamento das mensagens de erro enviadas pelo save_dados_pessoais.php
+    switch ($erro) {
+        case 'campos_registro_ausentes':
+            $mensagem_status = 'Por favor, preencha Nome, Email e Senha para criar sua conta.';
+            break;
+        case 'email_ja_cadastrado':
+            $mensagem_status = 'Este e-mail já está cadastrado. Tente fazer login ou use outro e-mail.';
+            break;
+        case 'falha_registro':
+            $mensagem_status = 'Ocorreu uma falha ao criar sua conta. Tente novamente.';
+            break;
+        case 'falha_ao_salvar_curriculo':
+            $mensagem_status = 'Houve um erro ao salvar seus dados de currículo.';
+            break;
+        default:
+            $mensagem_status = 'Ocorreu um erro desconhecido.';
+    }
+} elseif (isset($_GET['sucesso']) && $_GET['sucesso'] == 'dados_salvos') {
+    $mensagem_status = 'Dados pessoais salvos com sucesso!';
 }
 
-require_once __DIR__ . '/../includes/conexao.php';
-require_once __DIR__ . '/../includes/funcoes.php';
-
-$user_login_id = $_SESSION['usuarios'];
-
-$res = buscarDadosPessoaisCurriculo($conn, $user_login_id);
-
-if (!$res) {
-  $res = ['user_login_id' => $user_login_id, 'id' => null, 'nome' => '', 'email' => ''];
-  $user_auth = buscarUsuarioPorLogin($conn, $user_login_id);
-  if ($user_auth) {
-    $res['nome'] = $user_auth['nome'] ?? '';
-    $res['email'] = $user_auth['email'] ?? '';
-  }
-}
-$conn->close();
+// Nota: Use a classe CSS 'alerta-erro' ou similar no seu HTML para exibir $mensagem_status
 ?>
 <?php include __DIR__ . '/../includes/header.php'; ?>
 <div class="row justify-content-center">
