@@ -1,27 +1,33 @@
 <?php
 
 session_start();
-if (empty($_SESSION['usuarios'])) {
-    header("Location: /index.php");
+if (empty($_SESSION['curriculo_id'])) {
+    header("Location: dataUsers.php?erro=curriculo_nao_iniciado");
     exit;
 }
-require_once __DIR__ . '/../includes/conexao.php';
-require_once __DIR__ . '/../includes/funcoes.php';
 
-$usuario_id = $_POST['usuarios'] ?? null;
-$instituicao = $_POST['instituicao'] ?? '';
-$curso = $_POST['curso'] ?? '';
-$ano = $_POST['ano'] ?? null;
-$descricao = $_POST['descricao'] ?? '';
+require_once '../includes/conexao.php';
+require_once '../includes/funcoes.php';
 
-if (!$usuario_id) {
-    die("Usuário não identificado. Volte e salve os dados pessoais primeiro.");
+
+$curriculo_id = $_SESSION['curriculo_id'];
+$instituicao = $_POST['instituicao'] ?? null;
+$curso       = $_POST['curso'] ?? null;
+$ano         = $_POST['data_fim'] ?? null; 
+$descricao   = $_POST['descricao'] ?? null;
+
+if (!$instituicao || !$curso || !$ano) {
+    header("Location: formacao.php?erro=campos_incompletos");
+    exit;
 }
 
-if (adicionarFormacao($conn, $usuario_id, $instituicao, $curso, $ano, $descricao)) {
-    header("Location: /pages/formacao.php");
+$resultado = adicionarFormacao($conn, $curriculo_id, $instituicao, $curso, $ano, $descricao);
+
+if ($resultado) {
+    header("Location: formacao.php?sucesso=formacao_salva");
     exit;
 } else {
-    die("Erro ao salvar formação: " . $conn->error);
+    header("Location: formacao.php?erro=falha_ao_salvar_formacao");
+    exit;
 }
 ?>

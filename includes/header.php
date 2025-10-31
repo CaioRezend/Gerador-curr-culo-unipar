@@ -18,13 +18,13 @@ $caminhoBase = "/GERADOR-CURR-CULO-UNIPAR"
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
         <?php if (!empty($_SESSION['user_login_id'])): ?>
-          <li class="nav-item"><a class="nav-link" href="/pages/dados-pessoais.php">Dados</a></li>
-          <li class="nav-item"><a class="nav-link" href="/pages/formacao.php">Formação</a></li>
-          <li class="nav-item"><a class="nav-link" href="/pages/experiencia.php">Experiência</a></li>
-          <li class="nav-item"><a class="nav-link" href="/pages/visualizar.php">Visualizar</a></li>
-          <li class="nav-item"><a class="nav-link text-danger" href="/index.php?logout=1">Sair</a></li>
+          <li class="nav-item"><a class="nav-link" href="/GERADOR-CURR-CULO-UNIPAR/pages/dados-pessoais.php">Dados</a></li>
+          <li class="nav-item"><a class="nav-link" href="/GERADOR-CURR-CULO-UNIPAR/pages/formacao.php">Formação</a></li>
+          <li class="nav-item"><a class="nav-link" href="/GERADOR-CURR-CULO-UNIPAR/pages/experiencia.php">Experiência</a></li>
+          <li class="nav-item"><a class="nav-link" href="/GERADOR-CURR-CULO-UNIPAR/pages/visualizar.php">Visualizar</a></li>
+          <li class="nav-item"><a class="nav-link text-danger" href="/GERADOR-CURR-CULO-UNIPAR/index.php?logout=1">Sair</a></li>
         <?php else: ?>
-          <li class="nav-item"><a class="nav-link" href="<?php echo $caminhoBase; ?>/index.php">Entrar</a></li>
+          <li class="nav-item"><a class="nav-link" href="/GERADOR-CURR-CULO-UNIPAR/index.php">Entrar</a></li>
         <?php endif; ?>
       </ul>
     </div>
