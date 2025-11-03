@@ -1,16 +1,12 @@
-/* assets/css/style.css */
-
 body {
   font-family: Arial, sans-serif;
   padding: 20px;
   background-color: #f4f4f4;
-  /* Fundo cinza claro */
 }
 
 h2,
 h3 {
   color: #333;
-  /* Texto escuro para títulos */
 }
 
 form {
@@ -18,12 +14,9 @@ form {
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  /* Sombra suave */
   max-width: 600px;
   margin: 40px auto;
-  /* Centraliza e adiciona margem superior */
   border: 1px solid #ddd;
-  /* Borda sutil */
 }
 
 label {
@@ -77,4 +70,9 @@ hr {
   border-radius: 4px;
   margin-top: 10px;
   margin-bottom: 20px;
+}
+@media print {
+  .btn-download, .btn-imprimir {
+    display: none;
+  }
 }

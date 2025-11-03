@@ -20,7 +20,6 @@ $curriculo_id = $_SESSION['curriculo_id'] ?? null;
     <div class="col-md-8">
         <div class="card p-4">
             <h3>Experiência Profissional</h3>
-            
             <form action="<?php echo $caminhoBase; ?>/pages/saveExperiencia.php" method="post">
                 <div class="mb-3">
                     <label>Cargo</label>
@@ -41,17 +40,14 @@ $curriculo_id = $_SESSION['curriculo_id'] ?? null;
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" name="atual" id="atual">
                     <label class="form-check-label" for="atual">Atualmente trabalho aqui</label>
-                </div>
-                
+                </div>              
                 <input type="hidden" name="curriculo_id" value="<?php echo htmlspecialchars($curriculo_id); ?>">
-                
                 <div class="d-flex gap-2">
                     <button class="btn btn-dark">Adicionar Experiência</button>
                     <a href="<?php echo $caminhoBase ?>/pages/view.php" class="btn btn-outline-secondary">Visualizar Currículo</a>
                 </div>
             </form>
         </div>
-
         <div class="mt-4">
             <h5>Experiências cadastradas</h5>
             <?php
