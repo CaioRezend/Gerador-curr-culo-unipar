@@ -4,9 +4,8 @@
 1. Copie a pasta `gerador-curriculo-unipar` para `C:\xampp\htdocs\`.
 2. Inicie Apache e MySQL no painel do XAMPP.
 3. Abra `http://localhost/phpmyadmin` e importe `database/curriculo.sql`.
-4. Acesse `http://localhost/gerador-curriculo-unipar/addUser.php` para criar um usuário de teste (nome, email, senha).
-5. Faça login em `http://localhost/gerador-curriculo-unipar/index.php`.
-6. Preencha `Dados Pessoais`, adicione `Formação` e `Experiência`. Visualize e imprima.
+4. Acesse `http://localhost//GERADOR-CURR-CULO-UNIPAR/index.php` para criar um usuário de teste (nome, email, senha).
+5. Preencha `Dados Pessoais`, adicione `Formação` e `Experiência`. Visualize e imprima.
 
 ## Observações
 - As senhas são armazenadas com `password_hash`.
