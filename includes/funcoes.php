@@ -1,6 +1,4 @@
 <?php
-// includes/funcoes.php
-// Funções para gerenciamento do Currículo
 
 /**
  * Busca os dados pessoais de currículo pelo ID do currículo.
